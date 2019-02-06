@@ -10,14 +10,16 @@ import (
 	"runtime/debug"
 	"time"
 
+	"github.com/xaevman/app"
 	"github.com/xaevman/log"
 )
 
 const TraceDir = "trace"
 
 var (
-	DebugLogger log.DebugLogger
-	ErrorLogger log.ErrorLogger
+	fullTraceDir = TraceDir
+	DebugLogger  log.DebugLogger
+	ErrorLogger  log.ErrorLogger
 )
 
 func Log(traceName string, context interface{}) {
@@ -44,7 +46,7 @@ func Log(traceName string, context interface{}) {
 	traceStr := buffer.String()
 
 	traceFile := fmt.Sprintf("%s.%s.log", traceName, _fmtTime())
-	tracePath := filepath.Join(TraceDir, traceFile)
+	tracePath := filepath.Join(fullTraceDir, traceFile)
 
 	err = ioutil.WriteFile(tracePath, []byte(traceStr), 0660)
 	if err != nil {
@@ -53,7 +55,8 @@ func Log(traceName string, context interface{}) {
 }
 
 func init() {
-	err := os.MkdirAll(TraceDir, 0660)
+	fullTraceDir = filepath.Join(app.GetExeDir(), TraceDir)
+	err := os.MkdirAll(fullTraceDir, 0660)
 	if err != nil {
 		panic(err)
 	}
