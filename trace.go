@@ -22,7 +22,7 @@ var (
 	ErrorLogger  log.ErrorLogger
 )
 
-func Log(traceName string, context interface{}) {
+func Log(traceName string, context interface{}) string {
 	ctxJson, err := json.MarshalIndent(context, "", "    ")
 	if err != nil {
 		_err("Error generating context JSON: %v", err)
@@ -52,6 +52,8 @@ func Log(traceName string, context interface{}) {
 	if err != nil {
 		_err("Error writing trace file %s: %v", tracePath, err)
 	}
+
+	return tracePath
 }
 
 func init() {
