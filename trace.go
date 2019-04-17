@@ -58,7 +58,7 @@ func Log(traceName string, context interface{}) string {
 
 func init() {
 	fullTraceDir = filepath.Join(app.GetExeDir(), TraceDir)
-	err := os.MkdirAll(fullTraceDir, 0660)
+	err := os.MkdirAll(fullTraceDir, 0770)
 	if err != nil {
 		panic(err)
 	}
